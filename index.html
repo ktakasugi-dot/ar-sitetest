@@ -4,15 +4,8 @@
   const fileInput = document.getElementById('fileInput');
   const enterAR = document.getElementById('enterAR');
 
-  <model-viewer
-  src="sample.glb"
-  ios-src="sample.usdz"
-  ar
-  ar-modes="webxr scene-viewer quick-look"
-  camera-controls
-  auto-rotate
-></model-viewer>
 
+  
   // ファイルを選んだら viewer に読み込む（ローカルファイル）
   fileInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
