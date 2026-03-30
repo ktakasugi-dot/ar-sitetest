@@ -1,34 +1,93 @@
-<!doctype html> <html> <head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width,initial-scale=1" /> <title>Simple AR Sample</title> <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script> <style> body { margin: 0; font-family: sans-serif; display:flex; flex-direction:column; height:100vh; } header { padding: 8px; background:#222; color:#fff; } main { flex:1; display:flex; align-items:center; justify-content:center; background:#111; } model-viewer { width:100%; max-width:900px; height:70vh; background:#222; } .controls { padding:8px; display:flex; gap:8px; justify-content:center; } input[type="file"] { display:inline-block; } </style> </head> <body> <header> <h1>Simple AR Sample (model-viewer)</h1> </header> <main> <model-viewer id="viewer" src="sample.glb" ios-src="sample.usdz" alt="Sample 3D model" camera-controls ar ar-modes="webxr scene-viewer quick-look" environment-image="neutral" shadow-intensity="1" auto-rotate ></model-viewer> </main> <div class="controls"> <label> Load .glb <input id="fileInput" type="file" accept=".glb,.gltf,.usdz" /> </label> <button id="enterAR">Enter AR</button> </div>
-<script>
-  const viewer = document.getElementById('viewer');
-  const fileInput = document.getElementById('fileInput');
-  const enterAR = document.getElementById('enterAR');
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Multi GLB Switcher</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        background: #111;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+      header {
+        padding: 12px 16px;
+        background: #222;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+      }
+      model-viewer {
+        width: 100%;
+        height: 70vh;
+        background: #222;
+        border-radius: 12px;
+      }
+      .buttons {
+        display: flex;
+        gap: 8px;
+        padding: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        background: #1a1a1a;
+      }
+      button {
+        padding: 10px 14px;
+        border: none;
+        border-radius: 8px;
+        background: #4a90e2;
+        color: white;
+        font-size: 14px;
+      }
+      button:hover {
+        background: #3578c9;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>Multi GLB Switcher</strong>
+    </header>
 
+    <main>
+      <model-viewer
+        id="viewer"
+        src="models/model1.glb"
+        ios-src="models/model1.usdz"
+        alt="3D model"
+        camera-controls
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        environment-image="neutral"
+        shadow-intensity="1"
+        auto-rotate
+      ></model-viewer>
+    </main>
 
-  
-  // ファイルを選んだら viewer に読み込む（ローカルファイル）
-  fileInput.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    // .usdz を選んだ場合は ios-src を差し替え、.glb なら src を差し替え
-    if (file.name.toLowerCase().endsWith('.usdz')) {
-      viewer.setAttribute('ios-src', url);
-    } else {
-      viewer.setAttribute('src', url);
-    }
-    // オブジェクトURLは再利用を避けるためにページ離脱時に解放してもよい
-  });
+    <div class="buttons">
+      <button onclick="loadModel('models/model1.glb', 'models/model1.usdz')">Model 1</button>
+      <button onclick="loadModel('models/model2.glb', 'models/model2.usdz')">Model 2</button>
+      <button onclick="loadModel('models/model3.glb', 'models/model3.usdz')">Model 3</button>
+    </div>
 
-  // AR ボタンをプログラムで押す（必要なとき）
-  enterAR.addEventListener('click', () => {
-    // model-viewer の requestFullscreen() などと同様に showAR を呼べる
-    if (viewer && viewer.activateAR) {
-      viewer.activateAR();
-    } else {
-      // API名の互換差分があるので try/catch
-      try { viewer.enterAR(); } catch(e) { console.warn(e); }
-    }
-  });
-</script>
-</body> </html>
+    <script>
+      const viewer = document.getElementById('viewer');
+
+      function loadModel(glb, usdz) {
+        viewer.src = glb;
+        viewer.setAttribute('ios-src', usdz);
+      }
+
+      window.loadModel = loadModel;
+    </script>
+  </body>
+</html>
