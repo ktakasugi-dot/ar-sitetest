@@ -2,7 +2,6 @@
 <script>
   const viewer = document.getElementById('viewer');
   const fileInput = document.getElementById('fileInput');
-  const enterAR = document.getElementById('enterAR');
 
   from pxr import UsdUtils
 import os
@@ -25,6 +24,17 @@ print(UsdUtils.CreateNewUsdzPackage(input_file, output_file))
       viewer.setAttribute('src', url);
     }
     // オブジェクトURLは再利用を避けるためにページ離脱時に解放してもよい
+  });
+
+    // AR ボタンをプログラムで押す（必要なとき）
+  enterAR.addEventListener('click', () => {
+    // model-viewer の requestFullscreen() などと同様に showAR を呼べる
+    if (viewer && viewer.activateAR) {
+      viewer.activateAR();
+    } else {
+      // API名の互換差分があるので try/catch
+      try { viewer.enterAR(); } catch(e) { console.warn(e); }
+    }
   });
 
 </script>
