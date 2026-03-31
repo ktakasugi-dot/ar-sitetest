@@ -6,8 +6,8 @@
   from pxr import UsdUtils
 import os
 
-input_file = os.path.abspath("sample.usdc")
-output_file = os.path.abspath("sample.usdz")
+input_file = os.path.abspath("office.usdc")
+output_file = os.path.abspath("office.usdz")
 print(input_file)
 print(output_file)
 print(UsdUtils.CreateNewUsdzPackage(input_file, output_file))
