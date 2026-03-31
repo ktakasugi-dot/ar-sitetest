@@ -1,16 +1,18 @@
 <!doctype html> <html> <head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width,initial-scale=1" /> <title>Simple AR Sample</title> <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script> <style> body { margin: 0; font-family: sans-serif; display:flex; flex-direction:column; height:100vh; } header { padding: 8px; background:#222; color:#fff; } main { flex:1; display:flex; align-items:center; justify-content:center; background:#111; } model-viewer { width:100%; max-width:900px; height:70vh; background:#222; } .controls { padding:8px; display:flex; gap:8px; justify-content:center; } input[type="file"] { display:inline-block; } </style> </head> <body> <header> <h1>Simple AR Sample (model-viewer)</h1> </header> <main> <model-viewer id="viewer" src="sample.glb" ios-src="sample.usdz" alt="Sample 3D model" camera-controls ar ar-modes="webxr scene-viewer quick-look" environment-image="neutral" shadow-intensity="1" auto-rotate ></model-viewer> </main> <div class="controls"> <label> Load .glb <input id="fileInput" type="file" accept=".glb,.gltf,.usdz" /> </label> <button id="enterAR">Enter AR</button> </div>
+
 <script>
   const viewer = document.getElementById('viewer');
   const fileInput = document.getElementById('fileInput');
+  const enterAR = document.getElementById('enterAR');
 
-  from pxr import UsdUtils
-import os
-
-input_file = os.path.abspath("sample.usdc")
-output_file = os.path.abspath("sample.usdz")
-print(input_file)
-print(output_file)
-print(UsdUtils.CreateNewUsdzPackage(input_file, output_file))
+    <model-viewer
+  src="sample.glb"
+  ios-src="sample.usdz"
+  ar
+  ar-modes="webxr scene-viewer quick-look"
+  camera-controls
+  auto-rotate
+></model-viewer>
 
   // ファイルを選んだら viewer に読み込む（ローカルファイル）
   fileInput.addEventListener('change', async (e) => {
@@ -26,7 +28,7 @@ print(UsdUtils.CreateNewUsdzPackage(input_file, output_file))
     // オブジェクトURLは再利用を避けるためにページ離脱時に解放してもよい
   });
 
-    // AR ボタンをプログラムで押す（必要なとき）
+  // AR ボタンをプログラムで押す（必要なとき）
   enterAR.addEventListener('click', () => {
     // model-viewer の requestFullscreen() などと同様に showAR を呼べる
     if (viewer && viewer.activateAR) {
@@ -36,6 +38,6 @@ print(UsdUtils.CreateNewUsdzPackage(input_file, output_file))
       try { viewer.enterAR(); } catch(e) { console.warn(e); }
     }
   });
-
 </script>
-</body> </html>
+
+  </body> </html>
